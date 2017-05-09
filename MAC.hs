@@ -4,7 +4,6 @@
 module MAC where
 
 import CLaSH.Prelude
-import qualified Data.List as L
 
 ma :: Num a => a -> (a, a) -> a
 ma acc (x, y) = acc + x * y
@@ -21,4 +20,11 @@ macT state input = (newstate, output)
 mac :: Num a => Signal (a, a) -> Signal a
 mac = mealy macT 0
 
-test = L.take 4 $ simulate mac [(1,1), (2,2), (3,3), (4,4)]
+topEntity :: Signal (Signed 9, Signed 9) -> Signal (Signed 9)
+topEntity = mac
+
+testInput :: Signal (Signed 9, Signed 9)
+testInput = stimuliGenerator $(listToVecTH ([(1,1), (2,2), (3,3), (4,4)] :: [(Signed 9, Signed 9)]))
+
+expectedOutput :: Signal (Signed 9) -> Signal Bool
+expectedOutput = outputVerifier $(listToVecTH ([0, 9, 5, 14] :: [Signed 9]))
