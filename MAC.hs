@@ -28,3 +28,9 @@ testInput = stimuliGenerator $(listToVecTH ([(1,1), (2,2), (3,3), (4,4)] :: [(Si
 
 expectedOutput :: Signal (Signed 9) -> Signal Bool
 expectedOutput = outputVerifier $(listToVecTH ([0, 9, 5, 14] :: [Signed 9]))
+
+
+-- Alternativev specifications
+macN (x,y) = acc
+  where
+    acc = register 0 (acc + x * y)
